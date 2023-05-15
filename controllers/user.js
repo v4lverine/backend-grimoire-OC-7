@@ -30,7 +30,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jsWebToken.sign( //fonction sign() = chiffre nouveau token
                     { userId: user._id },
-                    'TBD',
+                    'RANDOM_TOKEN_SECRET',
                     { expiresIn: '24h' }
                 )
             });
