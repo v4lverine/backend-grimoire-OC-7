@@ -48,7 +48,6 @@ app.get('/api/books/:id', (req, res, next) => {
     .catch(error => res.status(404).json({ error }));
 });
 
-
 app.post('/api/books',(req, res, next) => {
     delete req.body._id;
     const book = new Book({
@@ -72,7 +71,7 @@ app.delete('/api/books/:id',(req, res, next) => {
 });
 
 // app.post('/api/books/:id/rating',(req, res, next) => {
-
+  
 // });
 
 module.exports = app;
