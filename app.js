@@ -4,9 +4,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 
-app.use(express.json());
+const booksRoutes = require('./routes/books');
 
-const Book = require('./models/Book');
+app.use(express.json());
 
 mongoose.connect(process.env.CONNECTION_STRING, //charge la bdd via clé dans .env
   { useNewUrlParser: true,
@@ -21,6 +21,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
     next();
 });
+
+app.use('/api/books', booksRoutes); //pour créer la route de l'app avec les URL qui suivront selon la route
 
 // app.post('/api/auth/signup', (req, res, next) => {
 
