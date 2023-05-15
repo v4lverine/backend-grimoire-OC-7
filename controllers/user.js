@@ -1,7 +1,8 @@
 const User = require('../models/User');
 const jsWebToken = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
-exports.signup = (red, res, next) => {
+exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10) //salage 10 fois pour sécuriser le hachage
     .then(hash => {
         const user = new User({

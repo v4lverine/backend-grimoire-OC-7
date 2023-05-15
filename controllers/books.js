@@ -40,9 +40,13 @@ exports.deleteOneBook = (req, res, next) => {
     .catch(error => res.status(400).json({ error }));
 };
 
-// exports.createRating = (req, res, next) => {
-    //à comprendre et à définir cette route
-//     Book.findOne({_id: req.params.id})
-//     .then (book => )
-//     .catch(error => res.status(400).json({ error }));
-// };
+exports.createRating = (req, res, next) => {
+    if (req.body.rating <0 || req.body.rating >5) {
+        res.status(400).json({ message: 'Données non conformes' })
+    }
+    Book.findOne({_id: req.params.id})
+    .then (book => {
+        book.ratings.push(req.body);
+    })
+    .catch(error => res.status(400).json({ error }));
+};
