@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 const booksRoutes = require('./routes/books');
+const userRoutes = require('./routes/user');
 
 app.use(express.json());
 
@@ -23,13 +24,6 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/books', booksRoutes); //pour créer la route de l'app avec les URL qui suivront selon la route
-
-// app.post('/api/auth/signup', (req, res, next) => {
-
-// });
-
-// app.post('/api/auth/login', (req, res, next) => {
-
-// });
+app.use('/api/auth', userRoutes);
 
 module.exports = app;

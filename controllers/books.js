@@ -42,5 +42,7 @@ exports.deleteOneBook = (req, res, next) => {
 
 // exports.createRating = (req, res, next) => {
     //à comprendre et à définir cette route
-    
+//     Book.findOne({_id: req.params.id})
+//     .then (book => )
+//     .catch(error => res.status(400).json({ error }));
 // };
