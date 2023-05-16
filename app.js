@@ -7,6 +7,8 @@ const app = express();
 const booksRoutes = require('./routes/books');
 const userRoutes = require('./routes/user');
 
+const path = require('path');
+
 app.use(express.json());
 
 mongoose.connect(process.env.CONNECTION_STRING, //charge la bdd via clé dans .env
@@ -22,6 +24,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/books', booksRoutes); //pour créer la route de l'app avec les URL qui suivront selon la route
 app.use('/api/auth', userRoutes);
 
