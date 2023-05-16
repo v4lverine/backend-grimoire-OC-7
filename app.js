@@ -12,8 +12,8 @@ app.use(express.json());
 mongoose.connect(process.env.CONNECTION_STRING, //charge la bdd via clé dans .env
   { useNewUrlParser: true,
     useUnifiedTopology: true })
-  .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .then(() => console.log('MongoDB connection established'))
+  .catch(() => console.log('MongoDB connection failed'));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -31,7 +31,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jsWebToken.sign( //fonction sign() = chiffre nouveau token
                     { userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
+                    process.env.API_TOKEN,
                     { expiresIn: '24h' }
                 )
             });

@@ -1,12 +1,16 @@
 const Book = require('../models/Book');
 
 exports.createBook = (req, res, next) => {
-    delete req.body._id;
+    const bookData = JSON.parse(req.body.book)
+    delete bookData._id;
+    delete bookData._userId;
     const book = new Book({
-      ...req.body
+      ...bookData,
+      userId: req.auth.userId,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     book.save()
-      .then(() => res.status(201).json({ message: 'Livre enregistré !'}))
+      .then(() => res.status(201).json({ message: 'Book saved !'}))
       .catch(error => res.status(400).json({ error }));
 };
 
@@ -30,23 +34,23 @@ exports.getBestRating = (req, res, next) => {
 
 exports.updateOneBook = (req, res, next) => {
     Book.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Livre modifié !'}))
+    .then(() => res.status(200).json({ message: 'Book modified !'}))
     .catch(error => res.status(400).json({ error }));
 };
 
 exports.deleteOneBook = (req, res, next) => {
     Book.deleteOne({ _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Livre supprimé !'}))
+    .then(() => res.status(200).json({ message: 'Book deleted !'}))
     .catch(error => res.status(400).json({ error }));
 };
 
-exports.createRating = (req, res, next) => {
-    if (req.body.rating <0 || req.body.rating >5) {
-        res.status(400).json({ message: 'Données non conformes' })
-    }
-    Book.findOne({_id: req.params.id})
-    .then (book => {
-        book.ratings.push(req.body);
-    })
-    .catch(error => res.status(400).json({ error }));
-};
+// exports.createRating = (req, res, next) => {
+//     if (req.body.rating <0 || req.body.rating >5) {
+//         res.status(400).json({ message: 'Données non conformes' })
+//     }
+//     Book.findOne({_id: req.params.id})
+//     .then (book => {
+//         book.ratings.push(req.body);
+//     })
+//     .catch(error => res.status(400).json({ error }));
+// };
