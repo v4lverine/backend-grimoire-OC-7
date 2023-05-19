@@ -8,7 +8,7 @@ exports.createBook = (req, res, next) => {
     const book = new Book({
       ...bookData,
       userId: req.auth.userId,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}.webp`
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.generatedName}`
     });
     book.save()
       .then(() => res.status(201).json({ message: 'Book saved !'}))
@@ -33,10 +33,10 @@ exports.getOneBook = (req, res, next) => {
 //     .catch(error => res.status(400).json({ error }));
 // };
 
-exports.updateOneBook = (req, res, next) => {
+exports.updateOneBook = (req, res) => {
     const bookData = req.file ? {
         ...JSON.parse(req.body.book),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}.webp`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.generatedName}`
     } : {...req.body };
 
     delete bookData._userId;

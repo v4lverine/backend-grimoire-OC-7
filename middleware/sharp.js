@@ -3,23 +3,28 @@ const fs = require('fs')
 
 
 async function sharpImage (req, res, next) {
-    fs.access("./images", (error) => {
+    fs.access('./images', (error) => {
       if (error) {
-        fs.mkdirSync("./images");
+        fs.mkdirSync('./images');
       }
     });
   
   
-    const { buffer, originalname } = req.file; // buffer = contenu de l'image
+    const { buffer, originalname } = req.file; // buffer = image en mémoire
+    const splitName = originalname.split('.')
+
+    splitName.pop()//pop = enlève dernier élément
+
+    const imageName = splitName.join('.')
+    const newName = `${imageName}.webp`;
   
-    const newName = `${originalname}.webp`;
-  
-    await sharp(buffer)
-      .resize(100)
-      .webp({ quality: 20 })
-      .toFile("./images/" + newName)
-    // const link = `http://localhost:3000/${ref}`;
+    req.file.generatedName = newName
+    
+    await sharp(buffer) //try.. catch
+      .resize(1000)
+      .webp({ quality: 80 })
+      .toFile('./images/' + newName)
     return next();
   };
 
-module.exports = sharpImage;
+module.exports = sharpImage; //upload de l'image

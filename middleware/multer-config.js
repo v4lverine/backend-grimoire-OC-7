@@ -1,20 +1,6 @@
 const multer = require("multer");
 
-const MIME_TYPES = {
-  'image/jpg': 'jpg',
-  'image/jpeg': 'jpg',
-  'image/png': 'png'
-};
+const storage = multer.memoryStorage(); //mise en mémoire de l'image
+const upload = multer({ storage }); //action de faire un chargement de l'image
 
-const storage = multer.diskStorage({ //comprend deux arguments
-  destination: (req, file, callback) => { //endroit dans lequel les images vont être uploadées
-      callback(null, 'images');
-  },
-  filename: (req, file, callback) => { //définit le nv nom de fichier à utiliser pour éviter doublon
-      const name = file.originalname.split(' ').join('_'); //remplace espaces par des underscores
-      const extension = MIME_TYPES[file.mimetype]; //génère extension du fichier
-      callback(null, name + Date.now() + '.' + extension); //créé le filename entier
-  }
-});
-
-module.exports = multer({storage: storage}).single('image'); //single pour fichier image uniqu
+module.exports = upload.single('image'); //charge image qqpart, upload sur un storage, single pour fichier image uniqu
