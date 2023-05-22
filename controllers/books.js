@@ -78,11 +78,10 @@ exports.createRating = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then(book => {
             //pour vérifier si l'utilisateur n'a pas déjà noté le livre
-            book.ratings.sort(rate => { //trie les notes données au livre
-                if (req.auth.userId === rate.userId) { //si l'user correspond a déjà noté...
-                    res.status(400).json({ message: "Ce compte a déjà noté ce livre" }) //...message d'erreur
-                }
-            })
+            if (book.ratings.find(rate => rate.userId === req.auth.userId) != undefined) {
+                res.status(400).json({ message: "Ce compte a déjà noté ce livre" })
+            }
+
             //les nouvelles données de l'array ratings sont pushées en tant qu'objet dans BDD
             book.ratings.push({
                 "userId": req.auth.userId, //la note de l'user en question..
@@ -90,7 +89,7 @@ exports.createRating = (req, res) => {
             });
             // Mise à jour des notes moyennes
             let sum = 0; //initialisation d'une note moyenne avec variable car changements au fil du temps
-            book.ratings.sort(rate => sum += rate.grade); //tri dans note moyenne initiale
+            book.ratings.forEach(rate => sum += rate.grade); //tri dans note moyenne initiale
             book.averageRating = sum / book.ratings.length; //calcul de la nouvelle note moyenne (division)
 
             Book.updateOne({ _id: req.params.id }, book) // recalcul des notes dans BDD après ajout par l'utilisateur
