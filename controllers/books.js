@@ -89,7 +89,7 @@ exports.createRating = (req, res) => {
                 "grade": req.body.rating    //... sera chargée dans BDD
             });
             // Mise à jour des notes moyennes
-            let sum = 0; //initialisation d'une note moyenne
+            let sum = 0; //initialisation d'une note moyenne avec variable car changements au fil du temps
             book.ratings.sort(rate => sum += rate.grade); //tri dans note moyenne initiale
             book.averageRating = sum / book.ratings.length; //calcul de la nouvelle note moyenne (division)
 
