@@ -9,8 +9,8 @@ const booksCtrl = require ('../controllers/books')
 
 router.post('/', auth, multer, sharpImage, booksCtrl.createBook); // récupère route avec méthode demandée et donne la suite de l'url selon la donnée à charger
 router.get('/', booksCtrl.getAllBooks);
+router.get('/bestrating', booksCtrl.getBestRating);
 router.get('/:id', booksCtrl.getOneBook);
-// router.get('/bestrating', booksCtrl.getBestRating);
 router.put('/:id', auth, multer, sharpImage, booksCtrl.updateOneBook);
 router.delete('/:id', auth, booksCtrl.deleteOneBook);
 // router.post('/:id/rating', auth, booksCtrl.createRating);
