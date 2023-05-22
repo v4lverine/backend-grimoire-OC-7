@@ -74,15 +74,31 @@ exports.deleteOneBook = (req, res) => {
         });
 };
 
-// exports.createRating = (req, res) => {
-//     if (req.body.rating <0 || req.body.rating >5) {
-//         res.status(400).json({ message: 'Données non conformes' })
-//     }
-//     Book.findOne({_id: req.params.id})
-//     .then (book => {
-//         book.ratings.push(req.body);
-//     })
-//     .catch(error => res.status(400).json({ error }));
-// }; 
-// un utilisateur unique ne peut plus changer la note une fois mise, vérifier sur tableau ratings que l'user a déjà défini une note
-// tenir bestRating à jour selon les notes (recalculer la note selon les notes saisies par les utilisateurs)
+exports.createRating = (req, res) => {
+    Book.findOne({ _id: req.params.id })
+        .then(book => {
+            //pour vérifier si l'utilisateur n'a pas déjà noté le livre
+            book.ratings.sort(rate => { //trie les notes données au livre
+                if (req.auth.userId === rate.userId) { //si l'user correspond a déjà noté...
+                    res.status(400).json({ message: "Ce compte a déjà noté ce livre" }) //...message d'erreur
+                }
+            })
+            //les nouvelles données de l'array ratings sont pushées en tant qu'objet dans BDD
+            book.ratings.push({
+                "userId": req.auth.userId, //la note de l'user en question..
+                "grade": req.body.rating    //... sera chargée dans BDD
+            });
+            // Mise à jour des notes moyennes
+            let sum = 0; //initialisation d'une note moyenne
+            book.ratings.sort(rate => sum += rate.grade); //tri dans note moyenne initiale
+            book.averageRating = sum / book.ratings.length; //calcul de la nouvelle note moyenne (division)
+
+            Book.updateOne({ _id: req.params.id }, book) // recalcul des notes dans BDD après ajout par l'utilisateur
+                .then(() => { res.status(201).json(book) })
+                .catch((error) => { res.status(401).json({ error }) });
+        })
+        .catch((error) => {
+            res.status(400).json({ error });
+        });
+};
+

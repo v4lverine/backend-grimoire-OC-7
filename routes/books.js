@@ -13,6 +13,6 @@ router.get('/bestrating', booksCtrl.getBestRating);
 router.get('/:id', booksCtrl.getOneBook);
 router.put('/:id', auth, multer, sharpImage, booksCtrl.updateOneBook);
 router.delete('/:id', auth, booksCtrl.deleteOneBook);
-// router.post('/:id/rating', auth, booksCtrl.createRating);
+router.post('/:id/rating', auth, booksCtrl.createRating);
 
 module.exports = router;
