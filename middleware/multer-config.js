@@ -1,6 +1,6 @@
 const multer = require("multer");
 
-const storage = multer.memoryStorage(); //mise en mémoire de l'image
-const upload = multer({ storage }); //action de faire un chargement de l'image
+const storage = multer.memoryStorage(); //Img stock in memory
+const upload = multer({ storage }); //Loading the image
 
-module.exports = upload.single('image'); //charge image qqpart, upload sur un storage, single pour fichier image uniqu
+module.exports = upload.single('image'); //Loads img somewhere, uploads a single img on a storage

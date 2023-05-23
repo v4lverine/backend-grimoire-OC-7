@@ -77,22 +77,23 @@ exports.deleteOneBook = (req, res) => {
 exports.createRating = (req, res) => {
     Book.findOne({ _id: req.params.id })
         .then(book => {
-            //pour vérifier si l'utilisateur n'a pas déjà noté le livre
+            //Check if logged user has not already rated this book
             if (book.ratings.find(rate => rate.userId === req.auth.userId) != undefined) {
                 res.status(400).json({ message: "Ce compte a déjà noté ce livre" })
             }
 
-            //les nouvelles données de l'array ratings sont pushées en tant qu'objet dans BDD
+            //New rating datas are pushed as objects in DB
             book.ratings.push({
-                "userId": req.auth.userId, //la note de l'user en question..
-                "grade": req.body.rating    //... sera chargée dans BDD
+                "userId": req.auth.userId, //Logged user's rate
+                "grade": req.body.rating    //... pushed in DB
             });
-            // Mise à jour des notes moyennes
-            let sum = 0; //initialisation d'une note moyenne avec variable car changements au fil du temps
-            book.ratings.forEach(rate => sum += rate.grade); //tri dans note moyenne initiale
-            book.averageRating = sum / book.ratings.length; //calcul de la nouvelle note moyenne (division)
 
-            Book.updateOne({ _id: req.params.id }, book) // recalcul des notes dans BDD après ajout par l'utilisateur
+            // Update avg ratings
+            let sum = 0; //Variable for avg rate = means to change in time
+            book.ratings.forEach(rate => sum += rate.grade); //Select each rate given to the selected book
+            book.averageRating = sum / book.ratings.length; //Calculation of new avg rate
+
+            Book.updateOne({ _id: req.params.id }, book) // Rates recalculation in DB after new rate given by user
                 .then(() => { res.status(201).json(book) })
                 .catch((error) => { res.status(401).json({ error }) });
         })

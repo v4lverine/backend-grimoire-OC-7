@@ -7,7 +7,8 @@ const sharpImage = require('../middleware/sharp');
 
 const booksCtrl = require ('../controllers/books')
 
-router.post('/', auth, multer, sharpImage, booksCtrl.createBook); // récupère route avec méthode demandée et donne la suite de l'url selon la donnée à charger
+// Routes recovered with requested method (GET, POST, PUT, DELETE) + controllers according to needs
+router.post('/', auth, multer, sharpImage, booksCtrl.createBook);
 router.get('/', booksCtrl.getAllBooks);
 router.get('/bestrating', booksCtrl.getBestRating);
 router.get('/:id', booksCtrl.getOneBook);

@@ -2,8 +2,8 @@ const User = require('../models/User');
 const jsWebToken = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
-exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10) //salage 10 fois pour sécuriser le hachage
+exports.signup = (req, res) => {
+    bcrypt.hash(req.body.password, 10) //10-times salt => hash more secured
     .then(hash => {
         const user = new User({
             email: req.body.email,
@@ -16,11 +16,11 @@ exports.signup = (req, res, next) => {
     .catch(error => res.status(500).json({ error }));
 };
 
-exports.login = (req, res, next) => {
+exports.login = (req, res) => {
     User.findOne({ email: req.body.email })
     .then(user => {
         if (!user) {
-            return res.status(401).json({ message: 'Identifiant ou mot de incorrect'});
+            return res.status(401).json({ message: 'Identifiant ou mot de passe incorrect'});
         }
         bcrypt.compare(req.body.password, user.password)
         .then(valid => {

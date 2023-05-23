@@ -11,12 +11,13 @@ const path = require('path');
 
 app.use(express.json());
 
-mongoose.connect(process.env.CONNECTION_STRING, //charge la bdd via clé dans .env
+mongoose.connect(process.env.CONNECTION_STRING, //Load DB via key stock in .env file
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('MongoDB connection established'))
   .catch(() => console.log('MongoDB connection failed'));
 
+  //CORS Headers for multi-origin HTTP requests
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -24,8 +25,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/api/books', booksRoutes); //pour créer la route de l'app avec les URL qui suivront selon la route
+app.use('/images', express.static(path.join(__dirname, 'images'))); //Function to load images into a directory 'images'
+app.use('/api/books', booksRoutes); //Creates app routes in order to load URLs
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

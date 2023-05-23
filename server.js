@@ -1,4 +1,4 @@
-require('dotenv').config(); //charge environnement
+require('dotenv').config(); //Load work environment
 
 const http = require('http');
 const app = require('./app');
