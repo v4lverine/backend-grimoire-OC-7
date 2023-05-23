@@ -43,7 +43,7 @@ exports.updateOneBook = (req, res) => {
     Book.findOne({_id: req.params.id})
         .then ((book) => {
             if (book.userId != req.auth.userId) {
-                res.status(401).json({ message:'Unauthorized' });
+                res.status(403).json({ message:'Unauthorized request' });
             } else {
                 Book.updateOne({ _id: req.params.id }, { ...bookData, _id: req.params.id })
                 .then(() => res.status(200).json({ message: 'Book modified !'}))
@@ -59,7 +59,7 @@ exports.deleteOneBook = (req, res) => {
     Book.findOne({_id: req.params.id})
         .then(book => {
             if (book.userId != req.auth.userId) {
-                res.status(401).json({ message: 'Unauthorized' });
+                res.status(403).json({ message: 'Unauthorized request' });
             } else {
                 const filename = book.imageUrl.split('/images/')[1];
                 fs.unlink(`images/${filename}`, () => {
