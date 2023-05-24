@@ -1,5 +1,6 @@
 const jsWebToken = require('jsonwebtoken');
 
+//Verify if user is connected
 module.exports = (req, res, next) => {
     try {
         const token = req.headers.authorization.split(' ')[1];
