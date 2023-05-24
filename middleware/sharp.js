@@ -5,7 +5,7 @@ const fs = require('fs')
 async function sharpImage (req, res, next) {
     fs.access('./images', (error) => {
       if (error) {
-        fs.mkdirSync('./images');
+        fs.mkdirSync('./images'); //creates 'images' directory if not existant
       }
     });
   
