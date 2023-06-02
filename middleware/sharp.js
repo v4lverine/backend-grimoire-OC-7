@@ -10,7 +10,7 @@ async function sharpImage (req, res, next) {
     });
   
   
-    const { buffer } = req.file.buffer; // buffer = image stock to memory
+    const buffer = req.file.buffer; // buffer = image stock to memory
 
     const newName = `${Date.now()}.webp`;
   
