@@ -83,6 +83,7 @@ exports.createRating = (req, res) => {
                 return
             }
 
+            //Grade limitation
             if (req.body.rating <1 || req.body.rating >5) {
                 res.status(400).json({ message: "La note doit être entre 1 et 5" })
                 return
@@ -97,7 +98,7 @@ exports.createRating = (req, res) => {
             // Update avg ratings
             let sum = 0; //Variable for avg rate = means to change in time
             book.ratings.forEach(rate => sum += rate.grade); //Select each rate given to the selected book
-            book.averageRating = Math.round(sum / book.ratings.length); //Calculation of new avg rate
+            book.averageRating = Math.round(sum / book.ratings.length); //Calculation of new avg rate with round
 
             Book.updateOne({ _id: req.params.id }, book) // Rates recalculation in DB after new rate given by user
                 .then(() => { res.status(201).json(book) })
