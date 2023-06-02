@@ -10,13 +10,9 @@ async function sharpImage (req, res, next) {
     });
   
   
-    const { buffer, originalname } = req.file; // buffer = image stock to memory
-    const splitName = originalname.split('.')
+    const { buffer } = req.file.buffer; // buffer = image stock to memory
 
-    splitName.pop()//Remove last element
-
-    const imageName = splitName.join('.')
-    const newName = `${imageName}.webp`;
+    const newName = `${Date.now()}.webp`;
   
     req.file.generatedName = newName
     
